@@ -14,6 +14,8 @@ import BannerLayout from './page/Admin/BannerLayout'
 import ContactLayout from './page/Admin/ContactLayout'
 import MainLayout from './components/MainLayout/MainLayout'
 import HomePage from './page/Hompage/Homepage'
+import ProductsPage from './page/Products/Products'
+import ProductDetailPage from './page/ProductDetail/ProductDetail'
 
 const ProtectedRoute = ({ user }) => {
   if (!user) return <Navigate to='/login' replace={true} />
@@ -40,6 +42,8 @@ function App() {
 
       <Route element={<MainLayout />} >
         <Route index element={<HomePage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/product/:id" element={<ProductDetailPage />} />
       </Route>
 
       <Route path="/login" element={<Auth />} />

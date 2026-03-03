@@ -93,7 +93,7 @@ function Hero() {
                   transform: 'scale(1.02)'
                 }
               }}
-              onClick={() => navigate('/all-products')}
+              onClick={() => navigate('/products')}
             />
           </SwiperSlide>
         ))}

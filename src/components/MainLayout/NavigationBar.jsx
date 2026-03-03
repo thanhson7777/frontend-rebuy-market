@@ -87,7 +87,7 @@ function NavigationBar() {
               ))
             )}
             <Divider sx={{ my: 0.5 }} />
-            <MenuItem component={Link} to="/all-products" onClick={handleCloseMenu} sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+            <MenuItem component={Link} to="/products" onClick={handleCloseMenu} sx={{ fontWeight: 'bold', color: 'primary.main' }}>
               Xem tất cả sản phẩm
             </MenuItem>
           </Menu>

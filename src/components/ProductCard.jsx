@@ -36,7 +36,6 @@ function ProductCard({ product }) {
       return
     }
 
-    // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
     if (currentCart && currentCart.items) {
       const isExist = currentCart.items.some(item => item.productId === product._id || item.productId?._id === product._id)
       if (isExist) {

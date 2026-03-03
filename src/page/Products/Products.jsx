@@ -1,0 +1,270 @@
+import React, { useState, useEffect } from 'react'
+import {
+  Container, Grid, Box, Typography,
+  Breadcrumbs, Link as MuiLink, Select, MenuItem,
+  FormControl, InputLabel, Pagination,
+  Accordion, AccordionSummary, AccordionDetails,
+  Checkbox, FormGroup, FormControlLabel, Slider, Button
+} from '@mui/material'
+import { Link, useLocation } from 'react-router-dom'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import FilterListIcon from '@mui/icons-material/FilterList'
+import ProductCard from '~/components/ProductCard'
+import { fetchProductsAPI, fetchAdminCategoriesAPI } from '~/apis'
+import { toast } from 'react-toastify'
+
+function ProductsPage() {
+  const [products, setProducts] = useState([])
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [totalPage, setTotalPage] = useState(1)
+
+  const [filters, setFilters] = useState({
+    page: 1,
+    limit: 12,
+    sort: 'newest',
+    category: 'all',
+    priceRange: [0, 50000000],
+    condition: {
+      new99: false,
+      new95: false,
+      used: false
+    }
+  })
+
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const res = await fetchAdminCategoriesAPI()
+        if (res) setCategories(res)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    getCategories()
+  }, [])
+
+  // Gọi API lấy Sản phẩm theo filter
+  useEffect(() => {
+    const getProducts = async () => {
+      setLoading(true)
+      try {
+        const queryParams = {
+          page: filters.page,
+          limit: filters.limit
+        }
+
+        if (filters.category !== 'all') {
+          queryParams.category = filters.category
+        }
+
+        switch (filters.sort) {
+          case 'price_asc':
+            queryParams.sortBy = 'price'
+            queryParams.orderBy = 'asc'
+            break
+          case 'price_desc':
+            queryParams.sortBy = 'price'
+            queryParams.orderBy = 'desc'
+            break
+          default:
+            // newest
+            queryParams.sortBy = 'createdAt'
+            queryParams.orderBy = 'desc'
+            break
+        }
+
+        const res = await fetchProductsAPI(queryParams)
+        if (res.products) {
+          console.log('Products response:', res.products)
+          setProducts(res.products || [])
+          setTotalPage(res.totalPage || 1)
+        }
+      } catch (error) {
+        console.error('Lỗi khi tải sản phẩm:', error)
+        toast.error('Không thể tải danh sách sản phẩm')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    getProducts()
+  }, [filters])
+
+  const handlePageChange = (event, value) => {
+    setFilters(prev => ({ ...prev, page: value }))
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleSortChange = (event) => {
+    setFilters(prev => ({ ...prev, sort: event.target.value, page: 1 }))
+  }
+
+  const handleCategorySelect = (categoryId) => {
+    setFilters(prev => ({ ...prev, category: categoryId, page: 1 }))
+  }
+
+  return (
+    <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh', pb: 8, pt: 4 }}>
+      <Container maxWidth="lg">
+        {/* Breadcrumb */}
+        <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 3 }}>
+          <MuiLink component={Link} to="/" underline="hover" color="inherit">Trang chủ</MuiLink>
+          <Typography color="text.primary" fontWeight="bold">Sản phẩm đồ cũ</Typography>
+        </Breadcrumbs>
+
+        <Grid container spacing={3}>
+          {/* Cột trái: Bộ lọc (Sidebar) */}
+          <Grid item xs={12} md={3}>
+            <Box sx={{ bgcolor: 'white', p: 2, borderRadius: 2, boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 1 }}>
+                <FilterListIcon />
+                <Typography variant="h6" fontWeight="bold">Bộ lọc</Typography>
+              </Box>
+
+              {/* Danh mục */}
+              <Accordion defaultExpanded disableGutters elevation={0}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 0 }}>
+                  <Typography fontWeight="bold">Danh mục</Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ px: 0, pt: 0 }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    <Typography
+                      onClick={() => handleCategorySelect('all')}
+                      sx={{
+                        cursor: 'pointer',
+                        color: filters.category === 'all' ? 'primary.main' : 'text.secondary',
+                        fontWeight: filters.category === 'all' ? 'bold' : 'normal',
+                        '&:hover': { color: 'primary.main' }
+                      }}
+                    >
+                      Tất cả sản phẩm
+                    </Typography>
+                    {categories.map((cat) => (
+                      <Typography
+                        key={cat._id}
+                        onClick={() => handleCategorySelect(cat._id)}
+                        sx={{
+                          cursor: 'pointer',
+                          color: filters.category === cat._id ? 'primary.main' : 'text.secondary',
+                          fontWeight: filters.category === cat._id ? 'bold' : 'normal',
+                          '&:hover': { color: 'primary.main' }
+                        }}
+                      >
+                        {cat.name}
+                      </Typography>
+                    ))}
+                  </Box>
+                </AccordionDetails>
+              </Accordion>
+
+              {/* Khoảng giá */}
+              <Accordion defaultExpanded disableGutters elevation={0}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 0 }}>
+                  <Typography fontWeight="bold">Khoảng giá</Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ px: 0, pt: 0 }}>
+                  <Slider
+                    value={filters.priceRange}
+                    onChange={(e, newValue) => setFilters(prev => ({ ...prev, priceRange: newValue }))}
+                    valueLabelDisplay="auto"
+                    min={0}
+                    max={50000000}
+                    step={500000}
+                    color="primary"
+                  />
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
+                    <Typography variant="caption">{filters.priceRange[0].toLocaleString()}đ</Typography>
+                    <Typography variant="caption">{filters.priceRange[1].toLocaleString()}đ</Typography>
+                  </Box>
+                  <Button
+                    fullWidth variant="outlined" size="small" sx={{ mt: 2 }}
+                    onClick={() => { /* Implement local filter action */ }}
+                  >
+                    Áp dụng giá
+                  </Button>
+                </AccordionDetails>
+              </Accordion>
+
+              {/* Tình trạng */}
+              <Accordion defaultExpanded disableGutters elevation={0}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 0 }}>
+                  <Typography fontWeight="bold">Tình trạng</Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ px: 0, pt: 0 }}>
+                  <FormGroup>
+                    <FormControlLabel control={<Checkbox size="small" />} label="Like New 99%" />
+                    <FormControlLabel control={<Checkbox size="small" />} label="Hàng dùng tốt 95%" />
+                    <FormControlLabel control={<Checkbox size="small" />} label="Có xước / Lỗi nhẹ" />
+                  </FormGroup>
+                </AccordionDetails>
+              </Accordion>
+            </Box>
+          </Grid>
+
+          {/* Cột phải: Danh sách Sản phẩm */}
+          <Grid item xs={12} md={9}>
+            {/* Header: Sorting */}
+            <Box sx={{
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              bgcolor: 'white', p: 2, borderRadius: 2, mb: 3, boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+            }}>
+              <Typography variant="body1">
+                Tìm thấy <b>{products.length}</b> sản phẩm
+              </Typography>
+
+              <FormControl size="small" sx={{ minWidth: 200 }}>
+                <InputLabel>Sắp xếp theo</InputLabel>
+                <Select
+                  value={filters.sort}
+                  label="Sắp xếp theo"
+                  onChange={handleSortChange}
+                >
+                  <MenuItem value="newest">Mới nhất</MenuItem>
+                  <MenuItem value="price_asc">Giá: Thấp đến Cao</MenuItem>
+                  <MenuItem value="price_desc">Giá: Cao đến Thấp</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+
+            {/* List products */}
+            <Grid container spacing={2}>
+              {loading ? (
+                <Box sx={{ width: '100%', py: 10, display: 'flex', justifyContent: 'center' }}>
+                  <Typography>Đang tải dữ liệu...</Typography>
+                </Box>
+              ) : products.length > 0 ? (
+                products.map((product) => (
+                  <Grid item xs={12} sm={6} md={4} key={product._id}>
+                    <ProductCard product={product} />
+                  </Grid>
+                ))
+              ) : (
+                <Box sx={{ width: '100%', py: 10, display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+                  <Typography variant="h6" color="text.secondary">Không tìm thấy sản phẩm nào phù hợp!</Typography>
+                  <Button variant="outlined" sx={{ mt: 2 }} onClick={() => setFilters(prev => ({ ...prev, category: 'all' }))}>
+                    Xóa bộ lọc
+                  </Button>
+                </Box>
+              )}
+            </Grid>
+
+            {/* Pagination */}
+            {totalPage > 1 && (
+              <Box sx={{ display: 'flex', justifyContent: 'center', mt: 5 }}>
+                <Pagination
+                  count={totalPage}
+                  page={filters.page}
+                  onChange={handlePageChange}
+                  color="primary"
+                />
+              </Box>
+            )}
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+  )
+}
+
+export default ProductsPage
