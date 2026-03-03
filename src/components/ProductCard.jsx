@@ -16,7 +16,8 @@ function ProductCard({ product }) {
   const navigate = useNavigate()
   const location = useLocation()
   const currentUser = useSelector(selectCurrentUser)
-  const currentCart = useSelector(selectCurrentCarts)
+  const currentCartRaw = useSelector(selectCurrentCarts)
+  const currentCart = currentCartRaw?.data || currentCartRaw || {}
   const dispatch = useDispatch()
 
   const getConditionColor = (condition) => {

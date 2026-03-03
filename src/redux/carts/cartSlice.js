@@ -30,6 +30,14 @@ export const addToCartAPI = createAsyncThunk(
   }
 )
 
+export const deleteItemCartAPI = createAsyncThunk(
+  'carts/deleteItemCartAPI',
+  async (data) => {
+    const response = await authorizeAxiosInstance.delete(`${API_ROOT}/cart/remove-item`, { data })
+    return response.data.data || response.data
+  }
+)
+
 export const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -47,6 +55,7 @@ export const cartSlice = createSlice({
     builder.addCase(fetchCartAPI.fulfilled, updateCartState)
     builder.addCase(updateCartAPI.fulfilled, updateCartState)
     builder.addCase(addToCartAPI.fulfilled, updateCartState)
+    builder.addCase(deleteItemCartAPI.fulfilled, updateCartState)
   }
 })
 

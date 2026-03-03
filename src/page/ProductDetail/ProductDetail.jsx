@@ -35,7 +35,8 @@ function ProductDetailPage() {
   const dispatch = useDispatch()
 
   const currentUser = useSelector(selectCurrentUser)
-  const currentCart = useSelector(selectCurrentCarts)
+  const currentCartRaw = useSelector(selectCurrentCarts)
+  const currentCart = currentCartRaw?.data || currentCartRaw || {}
 
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)

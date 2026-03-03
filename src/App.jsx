@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import { selectCurrentUser } from './redux/user/userSlice'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { useEffect } from 'react'
 import AdminLayout from './page/Admin/AdminLayout'
 import CategoryLayout from './page/Admin/CategoryLayout'
 import DashboardLayout from './page/Admin/DashboardLayout'
@@ -14,8 +15,14 @@ import BannerLayout from './page/Admin/BannerLayout'
 import ContactLayout from './page/Admin/ContactLayout'
 import MainLayout from './components/MainLayout/MainLayout'
 import HomePage from './page/Hompage/Homepage'
+import CartPage from './page/Cart/Cart'
+import CheckoutPage from './page/Checkout/Checkout'
+import OrderSuccessPage from './page/OrderSuccess/OrderSuccess'
 import ProductsPage from './page/Products/Products'
-import ProductDetailPage from './page/ProductDetail/ProductDetail'
+import ProductDetail from './page/ProductDetail/ProductDetail'
+import { fetchCartAPI } from './redux/carts/cartSlice'
+import OrderHistory from './page/OrderHistory/OrderHistory'
+import Profile from './page/Profile/Profile'
 
 const ProtectedRoute = ({ user }) => {
   if (!user) return <Navigate to='/login' replace={true} />
@@ -24,6 +31,14 @@ const ProtectedRoute = ({ user }) => {
 
 function App() {
   const currentUser = useSelector(selectCurrentUser)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (currentUser) {
+      dispatch(fetchCartAPI())
+    }
+  }, [currentUser, dispatch])
+
   return (
     <Routes>
       <Route path="/admin" element={<AdminLayout />} >
@@ -42,8 +57,13 @@ function App() {
 
       <Route element={<MainLayout />} >
         <Route index element={<HomePage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/order-success" element={<OrderSuccessPage />} />
         <Route path="/products" element={<ProductsPage />} />
-        <Route path="/product/:id" element={<ProductDetailPage />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/my-orders" element={<OrderHistory />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
 
       <Route path="/login" element={<Auth />} />
