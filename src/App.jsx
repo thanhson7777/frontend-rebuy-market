@@ -3,6 +3,7 @@ import { selectCurrentUser } from './redux/user/userSlice'
 import { useSelector } from 'react-redux'
 import AdminLayout from './page/Admin/AdminLayout'
 import CategoryLayout from './page/Admin/CategoryLayout'
+import DashboardLayout from './page/Admin/DashboardLayout'
 import ProductLayout from './page/Admin/ProductLayout'
 import Auth from './page/Auth/Auth'
 import CouponLayout from './page/Admin/CouponLayout'
@@ -23,6 +24,7 @@ function App() {
     <Routes>
       <Route path="/admin" element={<AdminLayout />} >
         <Route element={< ProtectedRoute user={currentUser} />} >
+          <Route index element={<DashboardLayout />} />
           <Route path='categories' element={<CategoryLayout />} />
           <Route path='products' element={<ProductLayout />} />
           <Route path='coupons' element={<CouponLayout />} />
