@@ -49,6 +49,11 @@ export const deleteAdminCategoryAPI = async (categoryId) => {
   return response.data
 }
 
+export const fetchCategoriesAPI = async () => {
+  const response = await authorizeAxiosInstance.get(`${API_ROOT}/categories`)
+  return response.data.data
+}
+
 // dashboard
 export const getDashboardStatsAPI = async () => {
   const response = await authorizeAxiosInstance.get(`${API_ROOT}/dashboard`)
@@ -195,3 +200,4 @@ export const deleteAdminContactAPI = async (contactId) => {
   const response = await authorizeAxiosInstance.delete(`${API_ROOT}/contacts/${contactId}`)
   return response.data
 }
+

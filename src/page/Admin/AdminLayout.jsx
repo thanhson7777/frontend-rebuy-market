@@ -24,6 +24,7 @@ import ArticleIcon from '@mui/icons-material/Article'
 import ViewCarouselIcon from '@mui/icons-material/ViewCarousel'
 import ContactSupportIcon from '@mui/icons-material/ContactSupport'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import Logo from '~/components/Header/Logo'
 
 const drawerWidth = 260
 
@@ -62,11 +63,8 @@ function AdminLayout() {
 
   const drawerContent = (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <Toolbar sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1, bgcolor: '#1e1e2f', color: '#fff' }}>
-        <StorefrontIcon sx={{ color: theme.palette.warning.main, fontSize: 30 }} />
-        <Typography variant="h6" fontWeight="bold" noWrap>
-          SECOND-HAND
-        </Typography>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 1, color: '#fff' }}>
+        <Logo />
       </Toolbar>
       <Divider />
 
