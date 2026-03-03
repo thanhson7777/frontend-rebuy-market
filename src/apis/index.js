@@ -154,6 +154,12 @@ export const fetchAdminArticlesAPI = async () => {
   return response.data.data
 }
 
+// public article list
+export const fetchArticlesAPI = async () => {
+  const response = await authorizeAxiosInstance.get(`${API_ROOT}/articles`)
+  return response.data.data || response.data
+}
+
 export const createAdminArticleAPI = async (data) => {
   const response = await authorizeAxiosInstance.post(`${API_ROOT}/articles`, data)
   return response.data
@@ -196,8 +202,13 @@ export const fetchAdminContactsAPI = async () => {
   return response.data.data
 }
 
+export const createContactAPI = async (data) => {
+  const response = await authorizeAxiosInstance.post(`${API_ROOT}/contacts/public`, data)
+  return response.data
+}
+
 export const updateAdminContactAPI = async (contactId, data) => {
-  const response = await authorizeAxiosInstance.patch(`${API_ROOT}/contacts/${contactId}`, data)
+  const response = await authorizeAxiosInstance.put(`${API_ROOT}/contacts/${contactId}`, data)
   return response.data
 }
 

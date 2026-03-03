@@ -32,7 +32,7 @@ const formatDate = (timestamp) => {
 
 const STATUS_CONFIG = {
   NEW: { label: 'Mới nhận', color: 'error' },
-  IN_PROGRESS: { label: 'Đang xử lý', color: 'primary' },
+  PENDING: { label: 'Đang xử lý', color: 'primary' },
   RESOLVED: { label: 'Đã giải quyết', color: 'success' }
 }
 
@@ -146,7 +146,7 @@ const ContactRow = ({ row, isExpanded, onToggleExpand, onDeleteClick, onReload }
                       <InputLabel>Trạng thái hiện tại</InputLabel>
                       <Select label="Trạng thái hiện tại" defaultValue={row.status || 'NEW'} {...register('status')}>
                         <MenuItem value="NEW" sx={{ color: 'error.main', fontWeight: 'bold' }}>Mới nhận (Cần xử lý)</MenuItem>
-                        <MenuItem value="IN_PROGRESS" sx={{ color: 'primary.main', fontWeight: 'bold' }}>Đang xử lý</MenuItem>
+                        <MenuItem value="PENDING" sx={{ color: 'primary.main', fontWeight: 'bold' }}>Đang xử lý</MenuItem>
                         <MenuItem value="RESOLVED" sx={{ color: 'success.main', fontWeight: 'bold' }}>Đã giải quyết xong</MenuItem>
                       </Select>
                     </FormControl>
@@ -240,7 +240,7 @@ function ContactLayout() {
         >
           <Tab label="TẤT CẢ" value="ALL" sx={{ fontWeight: 'bold' }} />
           <Tab label="MỚI NHẬN" value="NEW" sx={{ fontWeight: 'bold', color: currentTab === 'NEW' ? 'error.main' : 'inherit' }} />
-          <Tab label="ĐANG XỬ LÝ" value="IN_PROGRESS" sx={{ fontWeight: 'bold' }} />
+          <Tab label="ĐANG XỬ LÝ" value="PENDING" sx={{ fontWeight: 'bold' }} />
           <Tab label="ĐÃ GIẢI QUYẾT" value="RESOLVED" sx={{ fontWeight: 'bold' }} />
         </Tabs>
       </Paper>
