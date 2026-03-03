@@ -123,7 +123,7 @@ export const deleteAdminCouponAPI = async (couponId) => {
 }
 
 export const fetchCouponsAPI = async () => {
-  const response = await authorizeAxiosInstance.get(`${API_ROOT}/coupons/active`)
+  const response = await authorizeAxiosInstance.get(`${API_ROOT}/coupons`)
   return response.data.data
 }
 
@@ -134,7 +134,7 @@ export const fetchAdminOrdersAPI = async (params = {}) => {
 }
 
 export const updateAdminOrderStatusAPI = async (orderId, status) => {
-  const response = await authorizeAxiosInstance.patch(`${API_ROOT}/${orderId}/status`, { status })
+  const response = await authorizeAxiosInstance.patch(`${API_ROOT}/orders/admin/${orderId}/status`, { status })
   return response.data
 }
 

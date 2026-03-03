@@ -22,7 +22,8 @@ function HeaderActions() {
   const confirmLogout = useConfirm()
 
   const currentUser = useSelector(selectCurrentUser)
-  const currentCart = useSelector(selectCurrentCarts)
+  const currentCartRaw = useSelector(selectCurrentCarts)
+  const currentCart = currentCartRaw?.data || currentCartRaw || {}
 
   const cartCount = currentCart?.items?.length || 0
 
@@ -39,7 +40,7 @@ function HeaderActions() {
       confirmationText: 'Đăng xuất',
       cancellationText: 'Hủy bỏ'
     }).then(() => {
-      handleMenuClose()
+      handleCloseMenu()
       dispatch(logoutUserAPI())
       navigate('/')
     })
