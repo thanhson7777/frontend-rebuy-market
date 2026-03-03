@@ -18,7 +18,10 @@ function AccountTab() {
     defaultValues: {
       email: currentUser?.email || '',
       username: currentUser?.username || '',
-      displayName: currentUser?.displayName || ''
+      displayName: currentUser?.displayName || '',
+      fullName: currentUser?.fullName || '',
+      phone: currentUser?.phone || '',
+      address: currentUser?.address || ''
     }
   })
 
@@ -35,7 +38,10 @@ function AccountTab() {
 
   const onSubmit = (data) => {
     const formData = new FormData()
-    formData.append('displayName', data.displayName)
+    // formData.append('displayName', data.displayName)
+    formData.append('fullName', data.fullName)
+    formData.append('phone', data.phone)
+    formData.append('address', data.address)
     if (selectedFile) {
       formData.append('avatar', selectedFile)
     }
@@ -104,8 +110,8 @@ function AccountTab() {
         <Grid item xs={12} sm={6}>
           <TextField
             fullWidth
-            label="Tên đăng nhập"
-            {...register('username')}
+            label="Tên hiển thị"
+            {...register('displayName')}
             disabled
             sx={{
               '& .MuiInputBase-root': { bgcolor: '#f8fafc' },
@@ -121,19 +127,51 @@ function AccountTab() {
 
         <Grid item xs={12}>
           <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
-            Họ và tên hiển thị <Box component="span" sx={{ color: 'error.main' }}>*</Box>
+            Tên đầy đủ <Box component="span" sx={{ color: 'error.main' }}>*</Box>
           </Typography>
           <TextField
             fullWidth
             placeholder="Nhập họ và tên đầy đủ"
-            {...register('displayName', {
+            {...register('fullName', {
               required: 'Vui lòng không bỏ trống họ tên',
               minLength: { value: 3, message: 'Họ tên phải có ít nhất 3 ký tự' }
             })}
-            error={!!errors.displayName}
+            error={!!errors.fullName}
             color="primary"
           />
-          <FieldErrorAlert errors={errors} fieldName="displayName" />
+          <FieldErrorAlert errors={errors} fieldName="fullName" />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
+            Số điện thoại <Box component="span" sx={{ color: 'error.main' }}>*</Box>
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder="Nhập số điện thoại"
+            {...register('phone', {
+              required: 'Vui lòng không bỏ trống số điện thoại'
+            })}
+            error={!!errors.phone}
+            color="primary"
+          />
+          <FieldErrorAlert errors={errors} fieldName="phone" />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
+            Địa chỉ <Box component="span" sx={{ color: 'error.main' }}>*</Box>
+          </Typography>
+          <TextField
+            fullWidth
+            placeholder="Nhập địa chỉ"
+            {...register('address', {
+              required: 'Vui lòng không bỏ trống địa chỉ'
+            })}
+            error={!!errors.address}
+            color="primary"
+          />
+          <FieldErrorAlert errors={errors} fieldName="address" />
         </Grid>
       </Grid>
 

@@ -15,6 +15,9 @@ import BannerLayout from './page/Admin/BannerLayout'
 import ContactLayout from './page/Admin/ContactLayout'
 import MainLayout from './components/MainLayout/MainLayout'
 import HomePage from './page/Hompage/Homepage'
+import BlogPage from './page/Blog/Blog'
+import BlogDetail from './page/Blog/BlogDetail'
+import ContactPage from './page/Contact/Contact'
 import CartPage from './page/Cart/Cart'
 import CheckoutPage from './page/Checkout/Checkout'
 import OrderSuccessPage from './page/OrderSuccess/OrderSuccess'
@@ -57,6 +60,9 @@ function App() {
 
       <Route element={<MainLayout />} >
         <Route index element={<HomePage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:slug" element={<BlogDetail />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/order-success" element={<OrderSuccessPage />} />
