@@ -91,6 +91,11 @@ export const fetchProductsAPI = async () => {
   return response.data.data
 }
 
+export const fetchProductsDetailAPI = async (productId) => {
+  const response = await authorizeAxiosInstance.get(`${API_ROOT}/products/${productId}`)
+  return response.data.data
+}
+
 export const fetchProductDetailAPI = async (productId) => {
   const response = await authorizeAxiosInstance.get(`${API_ROOT}/products/${productId}`)
   return response.data.data
