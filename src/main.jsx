@@ -35,7 +35,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               }
             },
             confirmationButtonProps: {
-              color: 'primary',
+              color: 'success',
               variant: 'contained',
               sx: { fontWeight: 'bold', textTransform: 'none' }
             },
@@ -47,7 +47,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <GlobalStyles styles={{ a: { textDecoration: 'none' } }} />
             <CssBaseline />
             <App />
-            <ToastContainer position="bottom-left" theme="colored" />
+            <ToastContainer position="bottom-right" theme="light" />
           </ConfirmProvider>
         </CssVarsProvider>
       </BrowserRouter>
