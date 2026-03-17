@@ -22,6 +22,17 @@ import { useSelector } from 'react-redux'
 import { fetchAdminUsersAPI, updateAdminUserRoleAPI } from '~/apis'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
+}
+
 const formatDate = (timestamp) => {
   if (!timestamp) return ''
   const d = new Date(timestamp)
@@ -276,7 +287,7 @@ function UserLayout() {
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={handleSearch}
           InputProps={{ startAdornment: (<InputAdornment position="start"><SearchIcon /></InputAdornment>) }}
-          sx={{ width: '300px', bgcolor: '#fff', borderRadius: 1 }}
+          sx={{ width: '300px', bgcolor: '#fff', borderRadius: 1, ...fieldSx }}
         />
       </Box>
       <Paper elevation={1} sx={{ mb: 3, borderRadius: 2 }}>

@@ -106,8 +106,8 @@ const AddCategoryModal = ({ open, onClose, onReload }) => {
             fullWidth
             color="primary"
             label="Tên danh mục *"
-            sx={{ mb: 2 }}
-            InputLabelProps={{ sx: { bgcolor: 'white', px: 1, borderRadius: 1 } }}
+            sx={{ mb: 2, ...fieldSx }}
+            InputLabelProps={{ sx: { px: 1, borderRadius: 1 } }}
             {...register('name', { required: 'Tên danh mục không được để trống' })}
             error={!!errors.name}
             helperText={errors.name?.message}
@@ -118,7 +118,8 @@ const AddCategoryModal = ({ open, onClose, onReload }) => {
             label="Mô tả"
             multiline
             rows={3}
-            InputLabelProps={{ sx: { bgcolor: 'white', px: 1, borderRadius: 1 } }}
+            InputLabelProps={{ sx: { px: 1, borderRadius: 1 } }}
+            sx={{ ...fieldSx }}
             {...register('description')}
           />
         </DialogContent>
@@ -129,6 +130,17 @@ const AddCategoryModal = ({ open, onClose, onReload }) => {
       </form>
     </Dialog>
   )
+}
+
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
 }
 
 const CategoryRow = ({ row, isExpanded, onToggleExpand, onDeleteClick, onReload }) => {
@@ -218,8 +230,8 @@ const CategoryRow = ({ row, isExpanded, onToggleExpand, onDeleteClick, onReload 
                     <Grid item xs={12}>
                       <TextField
                         fullWidth label="Tên danh mục *" color="primary" size="small"
-                        InputLabelProps={{ sx: { bgcolor: 'white', px: 1, borderRadius: 1 } }}
-                        sx={{ bgcolor: 'white', borderRadius: 1 }}
+                        InputLabelProps={{ sx: { px: 1, borderRadius: 1 } }}
+                        sx={{ bgcolor: 'transparent', borderRadius: 1, ...fieldSx }}
                         {...register('name', { required: 'Không được để trống' })}
                         error={!!errors.name} helperText={errors.name?.message}
                       />
@@ -227,8 +239,8 @@ const CategoryRow = ({ row, isExpanded, onToggleExpand, onDeleteClick, onReload 
                     <Grid item xs={12}>
                       <TextField
                         fullWidth label="Mô tả" color="primary" multiline rows={3} size="small"
-                        InputLabelProps={{ sx: { bgcolor: 'white', px: 1, borderRadius: 1 } }}
-                        sx={{ bgcolor: 'white', borderRadius: 1 }}
+                        InputLabelProps={{ sx: { px: 1, borderRadius: 1 } }}
+                        sx={{ bgcolor: 'transparent', borderRadius: 1, ...fieldSx }}
                         {...register('description')}
                       />
                     </Grid>

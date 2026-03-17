@@ -8,6 +8,17 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera'
 import InfoIcon from '@mui/icons-material/Info'
 import { toast } from 'react-toastify'
 
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
+}
+
 function AccountTab() {
   const currentUser = useSelector(selectCurrentUser)
   const dispatch = useDispatch()
@@ -102,7 +113,8 @@ function AccountTab() {
             disabled
             sx={{
               '& .MuiInputBase-root': { bgcolor: '#f8fafc' },
-              '& .Mui-disabled': { WebkitTextFillColor: '#64748b' }
+              '& .Mui-disabled': { WebkitTextFillColor: '#64748b' },
+              ...fieldSx
             }}
             InputProps={{ startAdornment: <InfoIcon fontSize="small" sx={{ mr: 1, color: '#94a3b8' }} /> }}
           />
@@ -115,7 +127,8 @@ function AccountTab() {
             disabled
             sx={{
               '& .MuiInputBase-root': { bgcolor: '#f8fafc' },
-              '& .Mui-disabled': { WebkitTextFillColor: '#64748b' }
+              '& .Mui-disabled': { WebkitTextFillColor: '#64748b' },
+              ...fieldSx
             }}
             InputProps={{ startAdornment: <InfoIcon fontSize="small" sx={{ mr: 1, color: '#94a3b8' }} /> }}
           />
@@ -132,6 +145,7 @@ function AccountTab() {
           <TextField
             fullWidth
             placeholder="Nhập họ và tên đầy đủ"
+            sx={{ ...fieldSx }}
             {...register('fullName', {
               required: 'Vui lòng không bỏ trống họ tên',
               minLength: { value: 3, message: 'Họ tên phải có ít nhất 3 ký tự' }
@@ -149,6 +163,7 @@ function AccountTab() {
           <TextField
             fullWidth
             placeholder="Nhập số điện thoại"
+            sx={{ ...fieldSx }}
             {...register('phone', {
               required: 'Vui lòng không bỏ trống số điện thoại'
             })}
@@ -165,6 +180,7 @@ function AccountTab() {
           <TextField
             fullWidth
             placeholder="Nhập địa chỉ"
+            sx={{ ...fieldSx }}
             {...register('address', {
               required: 'Vui lòng không bỏ trống địa chỉ'
             })}

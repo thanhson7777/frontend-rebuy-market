@@ -26,6 +26,7 @@ import ProductDetail from './page/ProductDetail/ProductDetail'
 import { fetchCartAPI } from './redux/carts/cartSlice'
 import OrderHistory from './page/OrderHistory/OrderHistory'
 import Profile from './page/Profile/Profile'
+import AccountVerifycation from './page/Auth/Verify'
 
 const ProtectedRoute = ({ user }) => {
   if (!user) return <Navigate to='/login' replace={true} />
@@ -74,6 +75,7 @@ function App() {
 
       <Route path="/login" element={<Auth />} />
       <Route path="/register" element={<Auth />} />
+      <Route path="/verify" element={<AccountVerifycation />} />
     </Routes>
   )
 }

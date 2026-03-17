@@ -36,6 +36,17 @@ const STATUS_CONFIG = {
   RESOLVED: { label: 'Đã giải quyết', color: 'success' }
 }
 
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
+}
+
 const ContactRow = ({ row, isExpanded, onToggleExpand, onDeleteClick, onReload }) => {
   const confirm = useConfirm()
   const { register, handleSubmit } = useForm({
@@ -142,7 +153,7 @@ const ContactRow = ({ row, isExpanded, onToggleExpand, onDeleteClick, onReload }
                   <Paper elevation={0} sx={{ p: 2, border: '1px solid #e2e8f0', borderRadius: 2, bgcolor: 'white', height: '100%' }}>
                     <Typography variant="body2" color="text.secondary" fontWeight="bold" mb={1} textTransform="uppercase">Ghi chú & Trạng thái xử lý</Typography>
 
-                    <FormControl fullWidth size="small" sx={{ mb: 2 }}>
+                    <FormControl fullWidth size="small" sx={{ mb: 2, ...fieldSx }}>
                       <InputLabel>Trạng thái hiện tại</InputLabel>
                       <Select label="Trạng thái hiện tại" defaultValue={row.status || 'NEW'} {...register('status')}>
                         <MenuItem value="NEW" sx={{ color: 'error.main', fontWeight: 'bold' }}>Mới nhận (Cần xử lý)</MenuItem>
@@ -154,6 +165,7 @@ const ContactRow = ({ row, isExpanded, onToggleExpand, onDeleteClick, onReload }
                     <TextField
                       fullWidth size="small" label="Ghi chú của Admin (Nội bộ)" multiline rows={3}
                       placeholder="VD: Đã gọi điện xin lỗi khách và tặng mã giảm giá..."
+                      sx={{ ...fieldSx }}
                       {...register('adminNotes')}
                     />
 

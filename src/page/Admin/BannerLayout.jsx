@@ -32,6 +32,17 @@ const formatDate = (timestamp) => {
   return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`
 }
 
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
+}
+
 const AddBannerModal = ({ open, onClose, onReload }) => {
   const theme = useTheme()
   const [imageFiles, setImageFiles] = useState([])
@@ -98,7 +109,7 @@ const AddBannerModal = ({ open, onClose, onReload }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent dividers sx={{ bgcolor: '#f8fafc' }}>
           <TextField
-            fullWidth size="small" label="Tiêu đề chiến dịch / Banner *" color="primary" sx={{ mb: 3, bgcolor: 'white' }}
+            fullWidth size="small" label="Tiêu đề chiến dịch / Banner *" color="primary" sx={{ mb: 3, ...fieldSx }}
             {...register('title', { required: 'Vui lòng nhập tiêu đề' })} error={!!errors.title} helperText={errors.title?.message}
           />
 
@@ -221,7 +232,7 @@ const BannerRow = ({ row, isExpanded, onToggleExpand, onDeleteClick, onReload })
 
               <Grid container spacing={3} alignItems="flex-start">
                 <Grid item xs={12} md={5}>
-                  <TextField fullWidth size="small" label="Tiêu đề Banner" sx={{ bgcolor: 'white' }} {...register('title', { required: true })} />
+                  <TextField fullWidth size="small" label="Tiêu đề Banner" sx={fieldSx} {...register('title', { required: true })} />
                   <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
                     <Button variant="outlined" color="inherit" onClick={() => onToggleExpand(null)}>Đóng</Button>
                     <Button type="submit" variant="contained" color="primary" startIcon={<SaveIcon />}>Lưu Tiêu Đề</Button>

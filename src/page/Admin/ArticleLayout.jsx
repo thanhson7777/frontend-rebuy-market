@@ -40,6 +40,17 @@ const STATUS_OPTIONS = [
   { value: 'hidden', label: 'Đang ẩn', color: 'error' }
 ]
 
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
+}
+
 const quillModules = {
   toolbar: [
     [{ 'header': [1, 2, 3, false] }],
@@ -152,7 +163,7 @@ const AddArticleModal = ({ open, onClose, onReload }) => {
                   }} />
                 </Box>
 
-                <FormControl fullWidth size="small" sx={{ bgcolor: 'white' }}>
+                <FormControl fullWidth size="small" sx={fieldSx}>
                   <InputLabel>Trạng thái</InputLabel>
                   <Select label="Trạng thái" {...register('status')}>
                     {STATUS_OPTIONS.map(opt => <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>)}
@@ -163,11 +174,11 @@ const AddArticleModal = ({ open, onClose, onReload }) => {
 
             <Grid item xs={12} md={9}>
               <TextField
-                fullWidth size="small" label="Tiêu đề bài viết *" color="primary" sx={{ mb: 2, bgcolor: 'white' }}
+                fullWidth size="small" label="Tiêu đề bài viết *" color="primary" sx={{ mb: 2, ...fieldSx }}
                 {...register('name', { required: 'Không được để trống' })} error={!!errors.name} helperText={errors.name?.message}
               />
               <TextField
-                fullWidth size="small" label="Tóm tắt ngắn (Summary) *" multiline rows={2} color="primary" sx={{ mb: 2, bgcolor: 'white' }}
+                fullWidth size="small" label="Tóm tắt ngắn (Summary) *" multiline rows={2} color="primary" sx={{ mb: 2, ...fieldSx }}
                 {...register('summary', { required: 'Vui lòng nhập tóm tắt' })} error={!!errors.summary}
               />
 
@@ -288,7 +299,7 @@ const ArticleRow = ({ row, isExpanded, onToggleExpand, onDeleteClick, onReload }
                       }
                     }} />
                   </Box>
-                  <FormControl fullWidth size="small" sx={{ mt: 2, bgcolor: 'white' }}>
+                  <FormControl fullWidth size="small" sx={{ mt: 2, ...fieldSx }}>
                     <InputLabel>Trạng thái</InputLabel>
                     <Select label="Trạng thái" defaultValue={row.status} {...register('status')}>
                       {STATUS_OPTIONS.map(opt => <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>)}
@@ -297,8 +308,8 @@ const ArticleRow = ({ row, isExpanded, onToggleExpand, onDeleteClick, onReload }
                 </Grid>
 
                 <Grid item xs={12} md={9}>
-                  <TextField fullWidth size="small" label="Tiêu đề" sx={{ mb: 2, bgcolor: 'white' }} {...register('name')} />
-                  <TextField fullWidth size="small" label="Tóm tắt" multiline rows={2} sx={{ mb: 2, bgcolor: 'white' }} {...register('summary')} />
+                  <TextField fullWidth size="small" label="Tiêu đề" sx={{ mb: 2, ...fieldSx }} {...register('name')} />
+                  <TextField fullWidth size="small" label="Tóm tắt" multiline rows={2} sx={{ mb: 2, ...fieldSx }} {...register('summary')} />
 
                   {/* React Quill trong chế độ Edit */}
                   <Typography variant="body2" fontWeight="bold" mb={1} color="text.secondary">Nội dung chi tiết</Typography>

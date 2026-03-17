@@ -8,6 +8,17 @@ import { toast } from 'react-toastify'
 import { useConfirm } from 'material-ui-confirm'
 import { useNavigate } from 'react-router-dom'
 
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
+}
+
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import LockIcon from '@mui/icons-material/Lock'
@@ -67,6 +78,7 @@ function SettingsTab() {
             fullWidth
             type={showPassword ? 'text' : 'password'}
             label="Mật khẩu hiện tại"
+            sx={{ ...fieldSx }}
             {...register('current_password', { required: 'Vui lòng nhập mật khẩu cũ' })}
             error={!!errors.current_password}
             InputProps={{
@@ -85,6 +97,7 @@ function SettingsTab() {
             fullWidth
             type={showPassword ? 'text' : 'password'}
             label="Mật khẩu mới"
+            sx={{ ...fieldSx }}
             {...register('new_password', {
               required: 'Vui lòng nhập mật khẩu mới',
               minLength: { value: 6, message: 'Mật khẩu phải từ 6 ký tự trở lên' }
@@ -108,6 +121,7 @@ function SettingsTab() {
             fullWidth
             type={showPassword ? 'text' : 'password'}
             label="Xác nhận mật khẩu mới"
+            sx={{ ...fieldSx }}
             {...register('confirm_password', {
               required: 'Vui lòng nhập lại mật khẩu mới',
               validate: (value) => value === watch('new_password') || 'Mật khẩu xác nhận không khớp'

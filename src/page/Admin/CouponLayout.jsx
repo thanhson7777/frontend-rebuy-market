@@ -26,6 +26,18 @@ import {
 } from '~/apis'
 
 const formatPrice = (price) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price || 0)
+
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
+}
+
 const formatDateTimeUI = (timestamp) => {
   if (!timestamp) return ''
   const d = new Date(timestamp)
@@ -91,12 +103,12 @@ const AddCouponModal = ({ open, onClose, onReload }) => {
         <DialogContent dividers sx={{ bgcolor: '#f8fafc' }}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
-              <TextField fullWidth size="small" color="primary" label="Mã Code (VD: SUMMER26) *" sx={{ bgcolor: 'white' }}
+              <TextField fullWidth size="small" color="primary" label="Mã Code (VD: SUMMER26) *" sx={fieldSx}
                 {...register('code', { required: 'Không được để trống' })} error={!!errors.code}
               />
             </Grid>
             <Grid item xs={12} md={8}>
-              <TextField fullWidth size="small" color="primary" label="Tên chương trình *" sx={{ bgcolor: 'white' }}
+              <TextField fullWidth size="small" color="primary" label="Tên chương trình *" sx={fieldSx}
                 {...register('name', { required: 'Không được để trống' })} error={!!errors.name}
               />
             </Grid>
@@ -105,7 +117,7 @@ const AddCouponModal = ({ open, onClose, onReload }) => {
               <Typography variant="subtitle2" fontWeight="bold" sx={{ mt: 1 }}>Cấu hình giảm giá</Typography>
             </Grid>
             <Grid item xs={12} md={4}>
-              <FormControl fullWidth size="small" color="primary" sx={{ bgcolor: 'white' }}>
+              <FormControl fullWidth size="small" color="primary" sx={fieldSx}>
                 <InputLabel>Loại giảm giá *</InputLabel>
                 <Select label="Loại giảm giá *" {...register('type')}>
                   <MenuItem value="FIXED">Giảm tiền mặt (VNĐ)</MenuItem>
@@ -114,14 +126,14 @@ const AddCouponModal = ({ open, onClose, onReload }) => {
               </FormControl>
             </Grid>
             <Grid item xs={12} md={4}>
-              <TextField fullWidth size="small" color="primary" type="number" sx={{ bgcolor: 'white' }}
+              <TextField fullWidth size="small" color="primary" type="number" sx={fieldSx}
                 label={discountType === 'FIXED' ? "Số tiền giảm (VNĐ) *" : "Phần trăm giảm (%) *"}
                 {...register('value', { required: 'Bắt buộc nhập' })} error={!!errors.value}
               />
             </Grid>
             {discountType === 'PERCENT' ? (
               <Grid item xs={12} md={4}>
-                <TextField fullWidth size="small" color="primary" label="Giảm tối đa (VNĐ)" type="number" sx={{ bgcolor: 'white' }} {...register('maxAmount')} />
+                <TextField fullWidth size="small" color="primary" label="Giảm tối đa (VNĐ)" type="number" sx={fieldSx} {...register('maxAmount')} />
               </Grid>
             ) : <Grid item xs={12} md={4} />}
 
@@ -129,22 +141,22 @@ const AddCouponModal = ({ open, onClose, onReload }) => {
               <Typography variant="subtitle2" fontWeight="bold" sx={{ mt: 1 }}>Điều kiện & Thời hạn</Typography>
             </Grid>
             <Grid item xs={12} md={4}>
-              <TextField fullWidth size="small" color="primary" label="Đơn tối thiểu áp dụng (VNĐ)" type="number" sx={{ bgcolor: 'white' }} {...register('minOrder')} />
+              <TextField fullWidth size="small" color="primary" label="Đơn tối thiểu áp dụng (VNĐ)" type="number" sx={fieldSx} {...register('minOrder')} />
             </Grid>
             <Grid item xs={12} md={4}>
-              <TextField fullWidth size="small" color="primary" label="Tổng số lượng mã *" type="number" sx={{ bgcolor: 'white' }}
+              <TextField fullWidth size="small" color="primary" label="Tổng số lượng mã *" type="number" sx={fieldSx}
                 {...register('quantity', { required: true })} error={!!errors.quantity}
               />
             </Grid>
             <Grid item xs={12} md={4} />
 
             <Grid item xs={12} md={6}>
-              <TextField fullWidth size="small" color="primary" label="Thời gian bắt đầu *" type="datetime-local" InputLabelProps={{ shrink: true }} sx={{ bgcolor: 'white' }}
+              <TextField fullWidth size="small" color="primary" label="Thời gian bắt đầu *" type="datetime-local" InputLabelProps={{ shrink: true }} sx={fieldSx}
                 {...register('startDate', { required: true })} error={!!errors.startDate}
               />
             </Grid>
             <Grid item xs={12} md={6}>
-              <TextField fullWidth size="small" color="primary" label="Thời gian kết thúc *" type="datetime-local" InputLabelProps={{ shrink: true }} sx={{ bgcolor: 'white' }}
+              <TextField fullWidth size="small" color="primary" label="Thời gian kết thúc *" type="datetime-local" InputLabelProps={{ shrink: true }} sx={fieldSx}
                 {...register('endDate', { required: true })} error={!!errors.endDate}
               />
             </Grid>
@@ -248,10 +260,10 @@ const CouponRow = ({ row, isExpanded, onToggleExpand, onDeleteClick, onReload })
 
               <Grid container spacing={2} alignItems="center">
                 <Grid item xs={12} md={3}>
-                  <TextField fullWidth size="small" color="primary" label="Tên chương trình" sx={{ bgcolor: 'white' }} {...register('name')} />
+                  <TextField fullWidth size="small" color="primary" label="Tên chương trình" sx={fieldSx} {...register('name')} />
                 </Grid>
                 <Grid item xs={12} md={2}>
-                  <FormControl fullWidth size="small" disabled={isUsed} sx={{ bgcolor: 'white' }}>
+                  <FormControl fullWidth size="small" disabled={isUsed} sx={fieldSx}>
                     <InputLabel color="primary">Loại giảm giá</InputLabel>
                     <Select color="primary" label="Loại giảm giá" {...register('type')}>
                       <MenuItem value="FIXED">Tiền mặt</MenuItem>
@@ -260,13 +272,13 @@ const CouponRow = ({ row, isExpanded, onToggleExpand, onDeleteClick, onReload })
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} md={2}>
-                  <TextField fullWidth size="small" color="primary" label="Mức giảm" type="number" sx={{ bgcolor: 'white' }} disabled={isUsed && editType === 'PERCENT'} {...register('value')} />
+                  <TextField fullWidth size="small" color="primary" label="Mức giảm" type="number" sx={fieldSx} disabled={isUsed && editType === 'PERCENT'} {...register('value')} />
                 </Grid>
                 <Grid item xs={12} md={3}>
-                  <TextField fullWidth size="small" color="primary" label="Ngày kết thúc" type="datetime-local" InputLabelProps={{ shrink: true }} sx={{ bgcolor: 'white' }} {...register('endDate')} />
+                  <TextField fullWidth size="small" color="primary" label="Ngày kết thúc" type="datetime-local" InputLabelProps={{ shrink: true }} sx={fieldSx} {...register('endDate')} />
                 </Grid>
                 <Grid item xs={12} md={2}>
-                  <TextField fullWidth size="small" color="primary" label="Tổng số lượng" type="number" sx={{ bgcolor: 'white' }} {...register('quantity')} />
+                  <TextField fullWidth size="small" color="primary" label="Tổng số lượng" type="number" sx={fieldSx} {...register('quantity')} />
                 </Grid>
               </Grid>
 

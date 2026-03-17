@@ -13,6 +13,17 @@ import PaymentIcon from '@mui/icons-material/Payment'
 import logoMomo from '~/assets/momo-logo.png'
 import logoVnpay from '~/assets/vnpay-logo.png'
 
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
+}
+
 import { selectCurrentUser } from '~/redux/user/userSlice'
 
 function CheckoutLeftColumn({
@@ -108,14 +119,14 @@ function CheckoutLeftColumn({
 
         <Grid container spacing={2.5}>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label="Họ và tên người nhận *" name="fullname" value={shippingInfo.fullname} onChange={handleShippingChange} color="primary" />
+            <TextField fullWidth label="Họ và tên người nhận *" name="fullname" value={shippingInfo.fullname} onChange={handleShippingChange} color="primary" sx={fieldSx} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth label="Số điện thoại *" name="phone" value={shippingInfo.phone} onChange={handleShippingChange} color="primary" />
+            <TextField fullWidth label="Số điện thoại *" name="phone" value={shippingInfo.phone} onChange={handleShippingChange} color="primary" sx={fieldSx} />
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth color="primary" disabled={loadingProvinces}>
+            <FormControl fullWidth color="primary" disabled={loadingProvinces} sx={fieldSx}>
               <InputLabel>{loadingProvinces ? 'Đang tải...' : 'Tỉnh / Thành phố *'}</InputLabel>
               <Select name="province" value={shippingInfo.province} label={loadingProvinces ? 'Đang tải...' : 'Tỉnh / Thành phố *'} onChange={handleShippingChange}>
                 {provinces.map(p => <MenuItem key={p.code} value={p.name}>{p.name}</MenuItem>)}
@@ -123,7 +134,7 @@ function CheckoutLeftColumn({
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth color="primary" disabled={!shippingInfo.province || loadingDistricts}>
+            <FormControl fullWidth color="primary" disabled={!shippingInfo.province || loadingDistricts} sx={fieldSx}>
               <InputLabel>{loadingDistricts ? 'Đang tải...' : 'Quận / Huyện *'}</InputLabel>
               <Select name="district" value={shippingInfo.district} label={loadingDistricts ? 'Đang tải...' : 'Quận / Huyện *'} onChange={handleShippingChange}>
                 {districts.map(d => <MenuItem key={d.code} value={d.name}>{d.name}</MenuItem>)}
@@ -132,13 +143,14 @@ function CheckoutLeftColumn({
           </Grid>
 
           <Grid item xs={12}>
-            <TextField fullWidth label="Địa chỉ chi tiết (Số nhà, tên đường...) *" name="address" value={shippingInfo.address} onChange={handleShippingChange} color="primary" />
+            <TextField fullWidth label="Địa chỉ chi tiết (Số nhà, tên đường...) *" name="address" value={shippingInfo.address} onChange={handleShippingChange} color="primary" sx={fieldSx} />
           </Grid>
 
           <Grid item xs={12}>
             <TextField
               fullWidth label="Ghi chú đơn hàng (Tùy chọn)" name="note" value={shippingInfo.note} onChange={handleShippingChange} color="primary"
               multiline rows={2}
+              sx={fieldSx}
             />
           </Grid>
         </Grid>
@@ -146,10 +158,10 @@ function CheckoutLeftColumn({
         <Collapse in={requireVAT}>
           <Grid container spacing={2} sx={{ mt: 1, p: 2, bgcolor: '#f8fafc', borderRadius: 2, border: '1px dashed #cbd5e1' }}>
             <Grid item xs={12} sm={8}>
-              <TextField fullWidth size="small" label="Tên Công ty" name="companyName" value={vatInfo.companyName} onChange={handleVatChange} color="primary" />
+              <TextField fullWidth size="small" label="Tên Công ty" name="companyName" value={vatInfo.companyName} onChange={handleVatChange} color="primary" sx={fieldSx} />
             </Grid>
             <Grid item xs={12} sm={4}>
-              <TextField fullWidth size="small" label="MST" name="taxCode" value={vatInfo.taxCode} onChange={handleVatChange} color="primary" />
+              <TextField fullWidth size="small" label="MST" name="taxCode" value={vatInfo.taxCode} onChange={handleVatChange} color="primary" sx={fieldSx} />
             </Grid>
           </Grid>
         </Collapse>

@@ -18,6 +18,17 @@ import { shippingHelper } from '~/utils/shipping'
 
 const formatPrice = (price) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price || 0)
 
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
+}
+
 function CheckoutRightColumn({ paymentMethod, onPlaceOrder, isSubmitting, shippingInfo }) {
   const cart = useSelector(selectCurrentCarts)
   const cartItems = cart?.items || []
@@ -158,6 +169,7 @@ function CheckoutRightColumn({ paymentMethod, onPlaceOrder, isSubmitting, shippi
             fullWidth size="small" placeholder="Nhập mã..."
             value={couponInput} onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
             disabled={appliedCoupon !== null}
+            sx={fieldSx}
           />
           {appliedCoupon ? (
             <Button variant="text" color="error" onClick={handleRemoveCoupon} sx={{ fontWeight: 'bold' }}>Xóa</Button>

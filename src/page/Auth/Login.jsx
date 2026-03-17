@@ -22,6 +22,17 @@ import {
 import FieldErrorAlert from '~/components/FieldErrorAlert/FieldErrorAlert'
 import { loginUserAPI } from '~/redux/user/userSlice'
 
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
+}
+
 function Login() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -99,6 +110,7 @@ function Login() {
             variant="outlined"
             margin="normal"
             color="primary"
+            sx={fieldSx}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -122,6 +134,7 @@ function Login() {
             variant="outlined"
             margin="normal"
             color="primary"
+            sx={fieldSx}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

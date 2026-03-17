@@ -142,19 +142,19 @@ const AddProductModal = ({ open, onClose, onReload, categories }) => {
                 <Grid item xs={12}>
                   <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1 }}>1. Thông tin cơ bản</Typography>
                 </Grid>
-                <Grid item xs={12} md={8}><TextField fullWidth size="small" label="Tên sản phẩm *" {...register('name', { required: 'Không được để trống' })} error={!!errors.name} sx={{ bgcolor: 'white' }} /></Grid>
-                <Grid item xs={12} md={4}><TextField fullWidth size="small" label="Mã SKU (VD: IP12-001) *" {...register('sku', { required: 'Bắt buộc' })} error={!!errors.sku} sx={{ bgcolor: 'white' }} /></Grid>
+                <Grid item xs={12} md={8}><TextField fullWidth size="small" label="Tên sản phẩm *" {...register('name', { required: 'Không được để trống' })} error={!!errors.name} sx={fieldSx} /></Grid>
+                <Grid item xs={12} md={4}><TextField fullWidth size="small" label="Mã SKU (VD: IP12-001) *" {...register('sku', { required: 'Bắt buộc' })} error={!!errors.sku} sx={fieldSx} /></Grid>
                 <Grid item xs={12} md={4}>
-                  <FormControl fullWidth size="small" sx={{ bgcolor: 'white' }}>
+                  <FormControl fullWidth size="small" sx={fieldSx}>
                     <InputLabel>Danh mục *</InputLabel>
                     <Select defaultValue="" label="Danh mục *" {...register('categoryId', { required: true })}>
                       {categories.map((cat) => <MenuItem key={cat._id} value={cat._id}>{cat.name}</MenuItem>)}
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} md={4}><TextField fullWidth size="small" type="number" label="Giá bán (VNĐ) *" {...register('price', { required: true })} sx={{ bgcolor: 'white' }} /></Grid>
+                <Grid item xs={12} md={4}><TextField fullWidth size="small" type="number" label="Giá bán (VNĐ) *" {...register('price', { required: true })} sx={fieldSx} /></Grid>
                 <Grid item xs={12} md={4}>
-                  <FormControl fullWidth size="small" sx={{ bgcolor: 'white' }}>
+                  <FormControl fullWidth size="small" sx={fieldSx}>
                     <InputLabel>Trạng thái</InputLabel>
                     <Select defaultValue="available" label="Trạng thái" {...register('status')}>
                       {STATUS_OPTIONS.map(opt => <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>)}
@@ -165,16 +165,16 @@ const AddProductModal = ({ open, onClose, onReload, categories }) => {
                 <Grid item xs={12} sx={{ mt: 1 }}>
                   <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1 }}>2. Tình trạng máy (Đặc thù đồ cũ)</Typography>
                 </Grid>
-                <Grid item xs={12}><TextField fullWidth size="small" label="Khuyết điểm (VD: Trầy viền, xước dăm màn hình...)" multiline rows={2} {...register('defects')} sx={{ bgcolor: 'white' }} /></Grid>
-                <Grid item xs={12}><TextField fullWidth size="small" label="Mô tả chi tiết" multiline rows={3} {...register('description')} sx={{ bgcolor: 'white' }} /></Grid>
+                <Grid item xs={12}><TextField fullWidth size="small" label="Khuyết điểm (VD: Trầy viền, xước dăm màn hình...)" multiline rows={2} {...register('defects')} sx={fieldSx} /></Grid>
+                <Grid item xs={12}><TextField fullWidth size="small" label="Mô tả chi tiết" multiline rows={3} {...register('description')} sx={fieldSx} /></Grid>
 
                 <Grid item xs={12} sx={{ mt: 1 }}>
                   <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1 }}>3. Vận chuyển (Giao hàng)</Typography>
                 </Grid>
-                <Grid item xs={6} md={3}><TextField fullWidth size="small" type="number" label="Trọng lượng (gram)" {...register('weight')} sx={{ bgcolor: 'white' }} /></Grid>
-                <Grid item xs={6} md={3}><TextField fullWidth size="small" type="number" label="Dài (cm)" {...register('length')} sx={{ bgcolor: 'white' }} /></Grid>
-                <Grid item xs={6} md={3}><TextField fullWidth size="small" type="number" label="Rộng (cm)" {...register('width')} sx={{ bgcolor: 'white' }} /></Grid>
-                <Grid item xs={6} md={3}><TextField fullWidth size="small" type="number" label="Cao (cm)" {...register('height')} sx={{ bgcolor: 'white' }} /></Grid>
+                <Grid item xs={6} md={3}><TextField fullWidth size="small" type="number" label="Trọng lượng (gram)" {...register('weight')} sx={fieldSx} /></Grid>
+                <Grid item xs={6} md={3}><TextField fullWidth size="small" type="number" label="Dài (cm)" {...register('length')} sx={fieldSx} /></Grid>
+                <Grid item xs={6} md={3}><TextField fullWidth size="small" type="number" label="Rộng (cm)" {...register('width')} sx={fieldSx} /></Grid>
+                <Grid item xs={6} md={3}><TextField fullWidth size="small" type="number" label="Cao (cm)" {...register('height')} sx={fieldSx} /></Grid>
               </Grid>
             </Grid>
           </Grid>
@@ -186,6 +186,17 @@ const AddProductModal = ({ open, onClose, onReload, categories }) => {
       </form>
     </Dialog>
   )
+}
+
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
 }
 
 const ProductRow = ({ row, categories, isExpanded, onToggleExpand, onDeleteClick, onReload }) => {
@@ -245,11 +256,11 @@ const ProductRow = ({ row, categories, isExpanded, onToggleExpand, onDeleteClick
             <Box component="form" onSubmit={handleSubmit(onUpdateSubmit)} sx={{ p: 3, my: 2, bgcolor: '#e3f2fd', borderRadius: 2, border: '1px dashed #1976D2' }}>
               <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 2, color: '#1976D2' }}>Chỉnh sửa nhanh: {row.name}</Typography>
               <Grid container spacing={2}>
-                <Grid item xs={12} md={4}><TextField fullWidth size="small" label="Tên sản phẩm" {...register('name')} sx={{ bgcolor: 'white' }} /></Grid>
-                <Grid item xs={6} md={2}><TextField fullWidth size="small" label="SKU" {...register('sku')} sx={{ bgcolor: 'white' }} /></Grid>
-                <Grid item xs={6} md={2}><TextField fullWidth size="small" type="number" label="Giá bán" {...register('price')} sx={{ bgcolor: 'white' }} /></Grid>
+                <Grid item xs={12} md={4}><TextField fullWidth size="small" label="Tên sản phẩm" {...register('name')} sx={fieldSx} /></Grid>
+                <Grid item xs={6} md={2}><TextField fullWidth size="small" label="SKU" {...register('sku')} sx={fieldSx} /></Grid>
+                <Grid item xs={6} md={2}><TextField fullWidth size="small" type="number" label="Giá bán" {...register('price')} sx={fieldSx} /></Grid>
                 <Grid item xs={12} md={2}>
-                  <FormControl fullWidth size="small" sx={{ bgcolor: 'white' }}>
+                  <FormControl fullWidth size="small" sx={fieldSx}>
                     <InputLabel>Danh mục</InputLabel>
                     <Select label="Danh mục" defaultValue={row.categoryId} {...register('categoryId')}>
                       {categories.map((cat) => <MenuItem key={cat._id} value={cat._id}>{cat.name}</MenuItem>)}
@@ -257,14 +268,14 @@ const ProductRow = ({ row, categories, isExpanded, onToggleExpand, onDeleteClick
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} md={2}>
-                  <FormControl fullWidth size="small" sx={{ bgcolor: 'white' }}>
+                  <FormControl fullWidth size="small" sx={fieldSx}>
                     <InputLabel>Trạng thái</InputLabel>
                     <Select label="Trạng thái" defaultValue={row.status} {...register('status')}>
                       {STATUS_OPTIONS.map((opt) => <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>)}
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={12}><TextField fullWidth size="small" label="Khuyết điểm (Hiển thị cho khách)" {...register('defects')} sx={{ bgcolor: 'white' }} /></Grid>
+                <Grid item xs={12}><TextField fullWidth size="small" label="Khuyết điểm (Hiển thị cho khách)" {...register('defects')} sx={fieldSx} /></Grid>
               </Grid>
               <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
                 <Button variant="outlined" color="inherit" onClick={() => onToggleExpand(null)}>Hủy</Button>

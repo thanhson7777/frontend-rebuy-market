@@ -27,8 +27,16 @@ import {
 } from '~/utils/validators'
 import FieldErrorAlert from '~/components/FieldErrorAlert/FieldErrorAlert'
 
-const PHONE_RULE = /^(0[3|5|7|8|9])+([0-9]{8})\b/
-const PHONE_RULE_MESSAGE = 'Số điện thoại không hợp lệ (gồm 10 số)'
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
+}
 
 function Register() {
   const { register, handleSubmit, formState: { errors, isSubmitting }, watch } = useForm()
@@ -38,18 +46,15 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false)
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false)
 
-  const submitRegister = (data) => {
+  const submitRegister = async (data) => {
     const { email, password, fullName, phone } = data
 
-    toast.promise(
-      registerUserAPI({ email, password, fullName, phone }),
-      { pending: 'Đang xử lý đăng ký...' }
-    ).then(() => {
+    try {
+      await registerUserAPI({ email, password, fullName, phone })
       navigate(`/login?registeredEmail=${data.email}`)
-    }).catch((error) => {
+    } catch (error) {
       console.log('Đăng ký thất bại:', error)
-      toast.error('Email hoặc Số điện thoại đã tồn tại!')
-    })
+    }
   }
 
   return (
@@ -71,10 +76,11 @@ function Register() {
         <Box component="form" onSubmit={handleSubmit(submitRegister)} noValidate>
 
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth autoFocus label="Họ và tên" placeholder="Nguyễn Văn A"
                 variant="outlined" color="primary" size="small"
+                sx={fieldSx}
                 InputProps={{
                   startAdornment: <InputAdornment position="start"><PersonIcon color="primary" sx={{ mr: 0.5 }} /></InputAdornment>
                 }}
@@ -86,25 +92,11 @@ function Register() {
               />
               <FieldErrorAlert errors={errors} fieldName={'fullName'} />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth label="Số điện thoại" placeholder="0901234567"
-                variant="outlined" color="primary" size="small"
-                InputProps={{
-                  startAdornment: <InputAdornment position="start"><PhoneIcon color="primary" sx={{ mr: 0.5 }} /></InputAdornment>
-                }}
-                {...register('phone', {
-                  required: FIELD_REQUIRED_MESSAGE,
-                  pattern: { value: PHONE_RULE, message: PHONE_RULE_MESSAGE }
-                })}
-                error={!!errors.phone}
-              />
-              <FieldErrorAlert errors={errors} fieldName={'phone'} />
-            </Grid>
           </Grid>
           <TextField
             fullWidth label="Email" placeholder="your.email@example.com"
             variant="outlined" margin="normal" color="primary" size="small"
+            sx={fieldSx}
             InputProps={{
               startAdornment: <InputAdornment position="start"><EmailIcon color="primary" sx={{ mr: 0.5 }} /></InputAdornment>
             }}
@@ -119,6 +111,7 @@ function Register() {
             fullWidth label="Mật khẩu" placeholder="••••••••"
             type={showPassword ? 'text' : 'password'}
             variant="outlined" margin="normal" color="primary" size="small"
+            sx={fieldSx}
             InputProps={{
               startAdornment: <InputAdornment position="start"><LockOutlinedIcon color="primary" sx={{ mr: 0.5 }} /></InputAdornment>,
               endAdornment: (
@@ -140,6 +133,7 @@ function Register() {
             fullWidth label="Xác nhận mật khẩu" placeholder="••••••••"
             type={showPasswordConfirm ? 'text' : 'password'}
             variant="outlined" margin="normal" color="primary" size="small"
+            sx={fieldSx}
             InputProps={{
               startAdornment: <InputAdornment position="start"><LockOutlinedIcon color="primary" sx={{ mr: 0.5 }} /></InputAdornment>,
               endAdornment: (

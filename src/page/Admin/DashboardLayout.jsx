@@ -209,7 +209,7 @@ export default function DashboardLayout() {
                           <Typography variant="body2" fontWeight="bold">{order.shippingAddress?.fullname}</Typography>
                           <Typography variant="caption" color="text.secondary">{formatDate(order.createdAt)}</Typography>
                         </TableCell>
-                        <TableCell align="right" sx={{ fontWeight: 'medium' }}>{formatCurrency(order.totalAmount)}</TableCell>
+                        <TableCell align="right" sx={{ fontWeight: 'medium' }}>{formatCurrency(order.finalPrice ?? 0)}</TableCell>
                         <TableCell align="center">
                           <Box sx={{
                             px: 1, py: 0.5, borderRadius: 1, display: 'inline-block', fontSize: '0.75rem', fontWeight: 'bold',

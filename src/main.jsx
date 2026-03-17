@@ -47,7 +47,19 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <GlobalStyles styles={{ a: { textDecoration: 'none' } }} />
             <CssBaseline />
             <App />
-            <ToastContainer position="bottom-right" theme="light" />
+            <ToastContainer
+              position="bottom-right"
+              theme="light"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              style={{ width: '400px' }}
+            />
           </ConfirmProvider>
         </CssVarsProvider>
       </BrowserRouter>

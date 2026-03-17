@@ -11,6 +11,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong'
 import LogoutIcon from '@mui/icons-material/Logout'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 
 import { selectCurrentUser, logoutUserAPI } from '~/redux/user/userSlice'
 import { selectCurrentCarts } from '~/redux/carts/cartSlice'
@@ -112,6 +113,16 @@ function HeaderActions() {
               <ListItemIcon><ReceiptLongIcon fontSize="small" color="primary" /></ListItemIcon>
               Đơn mua của tôi
             </MenuItem>
+
+            {currentUser?.role === 'admin' && (
+              <>
+                <Divider sx={{ my: 1 }} />
+                <MenuItem component={Link} to="/admin">
+                  <ListItemIcon><AdminPanelSettingsIcon fontSize="small" color="primary" /></ListItemIcon>
+                  <Typography variant="body2" fontWeight="bold" color="primary.main">Quản trị website</Typography>
+                </MenuItem>
+              </>
+            )}
 
             <Divider sx={{ my: 1 }} />
             <MenuItem onClick={handleLogout} sx={{ color: 'error.main' }}>

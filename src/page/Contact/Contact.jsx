@@ -12,6 +12,17 @@ import { createContactAPI } from '~/apis'
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const PHONE_PATTERN = /^0\d{9,10}$/
 
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
+}
+
 function ContactPage() {
   const [formData, setFormData] = useState({
     fullname: '',
@@ -101,16 +112,16 @@ function ContactPage() {
                 <Typography variant="h5" fontWeight={800} color="primary.main">Gửi tin nhắn cho chúng tôi</Typography>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6}>
-                    <TextField fullWidth label="Họ và tên" name="fullname" value={formData.fullname} onChange={handleChange} error={!!errors.fullname} helperText={errors.fullname} />
+                    <TextField fullWidth label="Họ và tên" name="fullname" value={formData.fullname} onChange={handleChange} error={!!errors.fullname} helperText={errors.fullname} sx={fieldSx} />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField fullWidth label="Email" name="email" value={formData.email} onChange={handleChange} error={!!errors.email} helperText={errors.email} />
+                    <TextField fullWidth label="Email" name="email" value={formData.email} onChange={handleChange} error={!!errors.email} helperText={errors.email} sx={fieldSx} />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField fullWidth label="Số điện thoại" name="phone" value={formData.phone} onChange={handleChange} error={!!errors.phone} helperText={errors.phone} />
+                    <TextField fullWidth label="Số điện thoại" name="phone" value={formData.phone} onChange={handleChange} error={!!errors.phone} helperText={errors.phone} sx={fieldSx} />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField fullWidth multiline rows={4} label="Nội dung lời nhắn" name="message" value={formData.message} onChange={handleChange} error={!!errors.message} helperText={errors.message} />
+                    <TextField fullWidth multiline rows={4} label="Nội dung lời nhắn" name="message" value={formData.message} onChange={handleChange} error={!!errors.message} helperText={errors.message} sx={fieldSx} />
                   </Grid>
                 </Grid>
 

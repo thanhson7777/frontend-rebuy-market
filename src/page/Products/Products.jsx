@@ -13,6 +13,17 @@ import ProductCard from '~/components/ProductCard'
 import { fetchProductsAPI, fetchAdminCategoriesAPI } from '~/apis'
 import { toast } from 'react-toastify'
 
+const fieldSx = {
+  bgcolor: 'transparent',
+  '& .MuiOutlinedInput-root': {
+    bgcolor: 'transparent',
+    '& fieldset': { borderColor: 'rgba(25, 118, 210, 0.3)' },
+    '&:hover fieldset': { borderColor: 'rgba(25, 118, 210, 0.5)' },
+    '&.Mui-focused fieldset': { borderColor: 'primary.main', borderWidth: '1px' }
+  },
+  '& .MuiInputLabel-root': { bgcolor: 'transparent' }
+}
+
 function ProductsPage() {
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
@@ -213,7 +224,7 @@ function ProductsPage() {
                 Tìm thấy <b>{products.length}</b> sản phẩm
               </Typography>
 
-              <FormControl size="small" sx={{ minWidth: 200 }}>
+              <FormControl size="small" sx={{ minWidth: 200, ...fieldSx }}>
                 <InputLabel>Sắp xếp theo</InputLabel>
                 <Select
                   value={filters.sort}
