@@ -26,6 +26,7 @@ import ProductDetail from './page/ProductDetail/ProductDetail'
 import { fetchCartAPI } from './redux/carts/cartSlice'
 import OrderHistory from './page/OrderHistory/OrderHistory'
 import Profile from './page/Profile/Profile'
+import AdminProfile from './page/Admin/AdminProfile'
 import AccountVerifycation from './page/Auth/Verify'
 
 const ProtectedRoute = ({ user }) => {
@@ -48,6 +49,7 @@ function App() {
       <Route path="/admin" element={<AdminLayout />} >
         <Route element={< ProtectedRoute user={currentUser} />} >
           <Route index element={<DashboardLayout />} />
+          <Route path='profile' element={<AdminProfile />} />
           <Route path='categories' element={<CategoryLayout />} />
           <Route path='products' element={<ProductLayout />} />
           <Route path='coupons' element={<CouponLayout />} />

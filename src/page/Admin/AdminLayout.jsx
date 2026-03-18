@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Outlet, useNavigate, useLocation, Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { logoutUserAPI } from '~/redux/user/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { logoutUserAPI, selectCurrentUser } from '~/redux/user/userSlice'
 
 import {
   Box, Drawer, AppBar, Toolbar, List, Typography, Divider,
@@ -45,6 +45,7 @@ function AdminLayout() {
   const location = useLocation()
   const theme = useTheme()
   const dispatch = useDispatch()
+  const currentUser = useSelector(selectCurrentUser)
 
   const [mobileOpen, setMobileOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
@@ -136,7 +137,9 @@ function AdminLayout() {
 
           <Tooltip title="Tài khoản">
             <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
-              <Avatar sx={{ bgcolor: theme.palette.primary.main }}>AD</Avatar>
+              <Avatar src={currentUser?.avatar} sx={{ bgcolor: theme.palette.primary.main }}>
+                {currentUser?.displayName?.charAt(0) || currentUser?.username?.charAt(0) || 'AD'}
+              </Avatar>
             </IconButton>
           </Tooltip>
 

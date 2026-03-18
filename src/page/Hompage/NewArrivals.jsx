@@ -3,6 +3,7 @@ import { Box, Typography, Grid, Button, CircularProgress, Stack } from '@mui/mat
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import NewReleasesIcon from '@mui/icons-material/NewReleases'
 import ProductCard from '~/components/ProductCard'
+import { Link } from 'react-router-dom'
 
 import { fetchProductsAPI } from '~/apis'
 
@@ -11,7 +12,7 @@ function NewArrivals() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchProductsAPI()
+    fetchProductsAPI({ limit: 8, sortBy: 'createdAt', orderBy: 'desc' })
       .then((res) => {
         console.log('res', res)
         setProducts(res.products || [])
@@ -32,6 +33,8 @@ function NewArrivals() {
         <Button
           endIcon={<ArrowForwardIcon />}
           sx={{ fontWeight: 'bold', textTransform: 'none' }}
+          component={Link}
+          to="/products"
         >
           Xem tất cả
         </Button>

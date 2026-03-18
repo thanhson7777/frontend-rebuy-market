@@ -25,22 +25,8 @@ function BlogSection() {
     const getArticles = async () => {
       try {
         setLoading(true)
-        // Gọi API lấy bài viết đang public, lấy khoảng 3-4 bài mới nhất cho trang chủ
-        const res = await fetchArticlesAPI()
-
-        // Mock data tạm thời khớp với cấu trúc JSON của bạn để test UI
-        // const mockData = res || [
-        //   {
-        //     _id: "69a6686d9e995d598db69835",
-        //     name: "Kinh nghiệm chọn mua iPhone cũ nguyên zin, không sợ hàng dựng",
-        //     summary: "Bài viết này rất hay đó, hướng dẫn chi tiết cách kiểm tra ngoại hình, màn hình, true tone và pin trước khi xuống tiền mua iPhone cũ.",
-        //     slug: "bai-viet-hay",
-        //     image: "https://res.cloudinary.com/dwlio4rp3/image/upload/v1772513388/image-article-rebuy-market/qge1ffctjwikym8nbdri.jpg",
-        //     createdAt: 1772513389410,
-        //   },
-        // ]
-
-        setArticles(res.slice(0, 4))
+        const res = await fetchArticlesAPI({ limit: 4 })
+        setArticles(res || [])
       } catch (error) {
         console.error('Lỗi lấy bài viết:', error)
       } finally {

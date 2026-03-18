@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Button, TextField, Avatar, Grid, Typography, Badge, IconButton, Stack, Paper, Divider } from '@mui/material'
+import { Box, Button, TextField, Avatar, Grid, Typography, IconButton, Stack, Paper, Divider } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectCurrentUser, updateUserAPI } from '~/redux/user/userSlice'
 import { useForm } from 'react-hook-form'
@@ -7,6 +7,7 @@ import FieldErrorAlert from '~/components/FieldErrorAlert/FieldErrorAlert'
 import PhotoCamera from '@mui/icons-material/PhotoCamera'
 import InfoIcon from '@mui/icons-material/Info'
 import { toast } from 'react-toastify'
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 
 const fieldSx = {
   bgcolor: 'transparent',
@@ -19,14 +20,18 @@ const fieldSx = {
   '& .MuiInputLabel-root': { bgcolor: 'transparent' }
 }
 
-function AccountTab() {
+function AdminAccountTab() {
   const currentUser = useSelector(selectCurrentUser)
   const dispatch = useDispatch()
   const [avatarPreview, setAvatarPreview] = useState(currentUser?.avatar)
   const [selectedFile, setSelectedFile] = useState(null)
   const [isUpdating, setIsUpdating] = useState(false)
 
-  const { register, handleSubmit, formState: { errors, isDirty } } = useForm({
+  useEffect(() => {
+    setAvatarPreview(currentUser?.avatar)
+  }, [currentUser?.avatar])
+
+  const { register, handleSubmit, formState: { errors, isDirty }, reset } = useForm({
     defaultValues: {
       email: currentUser?.email || '',
       username: currentUser?.username || '',
@@ -57,7 +62,6 @@ function AccountTab() {
       formData.append('avatar', selectedFile)
     }
 
-    // Hiển thị toast pending
     const toastId = toast.info('Đang cập nhật hồ sơ...', {
       autoClose: false,
       isLoading: true
@@ -67,28 +71,28 @@ function AccountTab() {
     try {
       await dispatch(updateUserAPI(formData)).then((res) => {
         if (!res.error) {
-          toast.update(toastId, { 
-            render: 'Cập nhật hồ sơ thành công! ✨', 
-            type: 'success', 
-            isLoading: false, 
-            autoClose: 3000 
+          toast.update(toastId, {
+            render: 'Cập nhật hồ sơ thành công! ✨',
+            type: 'success',
+            isLoading: false,
+            autoClose: 3000
           })
           setSelectedFile(null)
         } else {
-          toast.update(toastId, { 
-            render: 'Cập nhật thất bại!', 
-            type: 'error', 
-            isLoading: false, 
-            autoClose: 3000 
+          toast.update(toastId, {
+            render: 'Cập nhật thất bại!',
+            type: 'error',
+            isLoading: false,
+            autoClose: 3000
           })
         }
       })
     } catch (error) {
-      toast.update(toastId, { 
-        render: 'Cập nhật thất bại!', 
-        type: 'error', 
-        isLoading: false, 
-        autoClose: 3000 
+      toast.update(toastId, {
+        render: 'Cập nhật thất bại!',
+        type: 'error',
+        isLoading: false,
+        autoClose: 3000
       })
     } finally {
       setIsUpdating(false)
@@ -125,9 +129,22 @@ function AccountTab() {
           </IconButton>
         </Box>
         <Box>
-          <Typography variant="h6" fontWeight="800" color="primary.main">
-            {currentUser?.displayName || currentUser?.username}
-          </Typography>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Typography variant="h6" fontWeight="800" color="primary.main">
+              {currentUser?.displayName || currentUser?.username}
+            </Typography>
+            <Box sx={{
+              bgcolor: 'warning.main',
+              color: 'white',
+              px: 1.5,
+              py: 0.5,
+              borderRadius: 1,
+              fontSize: '0.75rem',
+              fontWeight: 'bold'
+            }}>
+              ADMIN
+            </Box>
+          </Stack>
           <Typography variant="body2" color="text.secondary">
             Cập nhật ảnh đại diện và thông tin cá nhân của bạn tại đây.
           </Typography>
@@ -243,4 +260,4 @@ function AccountTab() {
   )
 }
 
-export default AccountTab
+export default AdminAccountTab

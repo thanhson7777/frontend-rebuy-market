@@ -163,8 +163,8 @@ export const fetchAdminArticlesAPI = async () => {
 }
 
 // public article list
-export const fetchArticlesAPI = async () => {
-  const response = await authorizeAxiosInstance.get(`${API_ROOT}/articles`)
+export const fetchArticlesAPI = async (params = {}) => {
+  const response = await authorizeAxiosInstance.get(`${API_ROOT}/articles`, { params })
   return response.data.data || response.data
 }
 

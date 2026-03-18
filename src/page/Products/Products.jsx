@@ -30,6 +30,7 @@ function ProductsPage() {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
   const [totalPage, setTotalPage] = useState(1)
+  const [totalProducts, setTotalProducts] = useState(0)
 
   const [filters, setFilters] = useState({
     page: 1,
@@ -80,6 +81,21 @@ function ProductsPage() {
           queryParams.keyword = filters.keyword
         }
 
+        // Lọc theo khoảng giá
+        if (filters.priceRange[0] > 0 || filters.priceRange[1] < 50000000) {
+          queryParams.minPrice = filters.priceRange[0]
+          queryParams.maxPrice = filters.priceRange[1]
+        }
+
+        // Lọc theo tình trạng
+        const conditions = []
+        if (filters.condition.new99) conditions.push('new99')
+        if (filters.condition.new95) conditions.push('new95')
+        if (filters.condition.used) conditions.push('used')
+        if (conditions.length > 0) {
+          queryParams.condition = conditions.join(',')
+        }
+
         switch (filters.sort) {
           case 'price_asc':
             queryParams.sortBy = 'price'
@@ -98,9 +114,11 @@ function ProductsPage() {
 
         const res = await fetchProductsAPI(queryParams)
         if (res.products) {
-          console.log('Products response:', res.products)
+          console.log('Products response:', res)
           setProducts(res.products || [])
-          setTotalPage(res.totalPage || 1)
+          setTotalProducts(res.totalProducts || 0)
+          const total = Math.ceil((res.totalProducts || 0) / filters.limit)
+          setTotalPage(total > 0 ? total : 1)
         }
       } catch (error) {
         console.error('Lỗi khi tải sản phẩm:', error)
@@ -209,7 +227,7 @@ function ProductsPage() {
                   </Box>
                   <Button
                     fullWidth variant="outlined" size="small" sx={{ mt: 2 }}
-                    onClick={() => { /* Implement local filter action */ }}
+                    onClick={() => setFilters(prev => ({ ...prev, page: 1 }))}
                   >
                     Áp dụng giá
                   </Button>
@@ -223,9 +241,36 @@ function ProductsPage() {
                 </AccordionSummary>
                 <AccordionDetails sx={{ px: 0, pt: 0 }}>
                   <FormGroup>
-                    <FormControlLabel control={<Checkbox size="small" />} label="Like New 99%" />
-                    <FormControlLabel control={<Checkbox size="small" />} label="Hàng dùng tốt 95%" />
-                    <FormControlLabel control={<Checkbox size="small" />} label="Có xước / Lỗi nhẹ" />
+                    <FormControlLabel 
+                      control={<Checkbox size="small" checked={filters.condition.new99} 
+                        onChange={(e) => setFilters(prev => ({ 
+                          ...prev, 
+                          condition: { ...prev.condition, new99: e.target.checked },
+                          page: 1 
+                        }))} 
+                      />} 
+                      label="Like New 99%" 
+                    />
+                    <FormControlLabel 
+                      control={<Checkbox size="small" checked={filters.condition.new95}
+                        onChange={(e) => setFilters(prev => ({ 
+                          ...prev, 
+                          condition: { ...prev.condition, new95: e.target.checked },
+                          page: 1 
+                        }))} 
+                      />} 
+                      label="Hàng dùng tốt 95%" 
+                    />
+                    <FormControlLabel 
+                      control={<Checkbox size="small" checked={filters.condition.used}
+                        onChange={(e) => setFilters(prev => ({ 
+                          ...prev, 
+                          condition: { ...prev.condition, used: e.target.checked },
+                          page: 1 
+                        }))} 
+                      />} 
+                      label="Có xước / Lỗi nhẹ" 
+                    />
                   </FormGroup>
                 </AccordionDetails>
               </Accordion>
@@ -234,13 +279,20 @@ function ProductsPage() {
 
           {/* Cột phải: Danh sách Sản phẩm */}
           <Grid item xs={12} md={9}>
-            {/* Header: Sorting */}
+            {/* Header: Sorting & Info */}
             <Box sx={{
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               bgcolor: 'white', p: 2, borderRadius: 2, mb: 3, boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
             }}>
               <Typography variant="body1">
-                Tìm thấy <b>{products.length}</b> sản phẩm
+                {totalProducts > 0 && (
+                  <span>
+                    Hiển thị <b>{(filters.page - 1) * filters.limit + 1}</b> - <b>{Math.min(filters.page * filters.limit, totalProducts)}</b> của <b>{totalProducts}</b> sản phẩm
+                  </span>
+                )}
+                {totalProducts === 0 && !loading && (
+                  <span>Không tìm thấy sản phẩm nào</span>
+                )}
               </Typography>
 
               <FormControl size="small" sx={{ minWidth: 200, ...fieldSx }}>
