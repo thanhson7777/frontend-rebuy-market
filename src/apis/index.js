@@ -87,9 +87,16 @@ export const deleteAdminProductAPI = async (productId) => {
   return response.data
 }
 
-export const fetchProductsAPI = async () => {
-  const response = await authorizeAxiosInstance.get(`${API_ROOT}/products`)
+export const fetchProductsAPI = async (params = {}) => {
+  const response = await authorizeAxiosInstance.get(`${API_ROOT}/products`, { params })
   return response.data.data
+}
+
+export const searchProductsAPI = async (keyword) => {
+  const response = await authorizeAxiosInstance.get(`${API_ROOT}/products/search`, {
+    params: { keyword }
+  })
+  return response.data.data || response.data
 }
 
 export const fetchProductsDetailAPI = async (productId) => {

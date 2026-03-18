@@ -6,7 +6,7 @@ import {
   Accordion, AccordionSummary, AccordionDetails,
   Checkbox, FormGroup, FormControlLabel, Slider, Button
 } from '@mui/material'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import ProductCard from '~/components/ProductCard'
@@ -25,6 +25,7 @@ const fieldSx = {
 }
 
 function ProductsPage() {
+  const [searchParams] = useSearchParams()
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
@@ -40,7 +41,8 @@ function ProductsPage() {
       new99: false,
       new95: false,
       used: false
-    }
+    },
+    keyword: searchParams.get('keyword') || ''
   })
 
   useEffect(() => {
@@ -55,6 +57,11 @@ function ProductsPage() {
     getCategories()
   }, [])
 
+  useEffect(() => {
+    const urlKeyword = searchParams.get('keyword') || ''
+    setFilters(prev => (prev.keyword !== urlKeyword ? { ...prev, keyword: urlKeyword, page: 1 } : prev))
+  }, [searchParams])
+
   // Gọi API lấy Sản phẩm theo filter
   useEffect(() => {
     const getProducts = async () => {
@@ -67,6 +74,10 @@ function ProductsPage() {
 
         if (filters.category !== 'all') {
           queryParams.category = filters.category
+        }
+
+        if (filters.keyword) {
+          queryParams.keyword = filters.keyword
         }
 
         switch (filters.sort) {
@@ -121,7 +132,15 @@ function ProductsPage() {
         {/* Breadcrumb */}
         <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 3 }}>
           <MuiLink component={Link} to="/" underline="hover" color="inherit">Trang chủ</MuiLink>
-          <Typography color="text.primary" fontWeight="bold">Sản phẩm đồ cũ</Typography>
+          <MuiLink component={Link} to="/products" underline="hover" color="inherit">Sản phẩm đồ cũ</MuiLink>
+          {filters.keyword && (
+            <Typography color="text.primary" fontWeight="bold">
+              Tìm kiếm: "{filters.keyword}"
+            </Typography>
+          )}
+          {!filters.keyword && (
+            <Typography color="text.primary" fontWeight="bold">Sản phẩm đồ cũ</Typography>
+          )}
         </Breadcrumbs>
 
         <Grid container spacing={3}>
